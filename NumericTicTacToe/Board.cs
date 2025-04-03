@@ -37,7 +37,7 @@ class Board
   {
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
-      WriteLine($"***WARNING!!! Your move is outside of the board. Enter number <= {Size}***");
+      WriteLine($"***WARNING!!! Your move is outside of the board. The valid size is from 0 to {Size-1}.***");
       WriteLine("Please re-enter");
       return false;
     }
@@ -104,10 +104,5 @@ class Board
     }
 
     return false;
-  }
-
-  public void CheckEnd()
-  {
-
   }
 }

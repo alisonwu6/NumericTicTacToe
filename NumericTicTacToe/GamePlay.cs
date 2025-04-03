@@ -17,8 +17,8 @@ class GamePlay
     board = new Board(size);
     int[] currentNumbers;
 
-    Player player1 = new(true, size);
-    Player player2 = new(false, size);
+    player1 = new(true, size);
+    player2 = new(false, size);
     currentPlayer = player1;
 
     while (true)
@@ -82,15 +82,16 @@ class GamePlay
 
       if (board.hasWon())
       {
+        WriteLine("==============");
+        WriteLine("Game over");
         WriteLine($"{currentPlayer.Name} wins.");
+        WriteLine("==============");
+        board.Display("Final Result");
         break;
       }
 
       currentPlayer = currentPlayer == player1 ? player2 : player1;
     }
-
-    // Start a game
-
     /*
     * 1. choose game mode
     * 2. size of the board
