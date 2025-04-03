@@ -79,8 +79,6 @@ class Board
           isColFull++;
         }
       }
-      WriteLine($"isRowFull: {isRowFull}");
-      WriteLine($"isColFull: {isColFull}");
       if ((isRowFull == Size || isColFull == Size) && (horizontalSumResult == WinningScore || verticalSumResult == WinningScore))
       {
         return true;
@@ -107,8 +105,6 @@ class Board
         isD2Full++;
       }
     }
-    WriteLine($"isD1Full: {isD1Full}");
-    WriteLine($"isD2Full: {isD2Full}");
     if ((isD1Full == Size || isD2Full == Size) && (d1 == WinningScore || d2 == WinningScore))
     {
       return true;
