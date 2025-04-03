@@ -50,6 +50,12 @@ class Player
   {
     int[] number = IsOdd ? OddNumbers : EvenNumbers;
 
+    if (selectedNumber == -1)
+    {
+      WriteLine($"***WARNING!!! -1 indicates a number has been placed on the board.***");
+      return false;
+    }
+
     for (int i = 0; i < number.Length; i++)
     {
       if (selectedNumber == number[i])
@@ -59,6 +65,7 @@ class Player
       }
     }
 
+    WriteLine($"***WARNING!!! Your selected number is not in the {(IsOdd ? "odd" : "even")} number list.***");
     return false;
   }
 }

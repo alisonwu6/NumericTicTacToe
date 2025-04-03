@@ -12,10 +12,10 @@ class Board
     WinningScore = Size * (Size * Size + 1) / 2;
   }
 
-  public void Display()
+  public void Display(string name)
   {
-    WriteLine("------------------------------");
-    WriteLine("Your Numeric Tic-Tac-Toe Board");
+    WriteLine("------------------------------------------");
+    WriteLine($"Your Numeric Tic-Tac-Toe Board ({name})");
     for (int i = 0; i < Size; i++)
     {
       for (int j = 0; j < Size; j++)
@@ -33,18 +33,18 @@ class Board
     }
   }
 
-  public bool IsMoveValid(int row, int col, int number)
+  public bool IsMoveGridValid(int row, int col, int number)
   {
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
-      WriteLine($"WARNING: Your move is not allowed due to the range is out of {Size}.");
+      WriteLine($"***WARNING!!! Your move is outside of the board. Enter number <= {Size}***");
       WriteLine("Please re-enter");
       return false;
     }
 
     if (Grid[row, col] != null)
     {
-      WriteLine($"WARNING: Your move [{row}, {col}] is already taken. Please make another move.");
+      WriteLine($"***WARNING!!! Your move [{row}, {col}] is already taken. Please make another move.***");
       WriteLine("Please re-enter");
       return false;
     }
