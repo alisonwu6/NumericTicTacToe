@@ -59,11 +59,12 @@ class GamePlay
         }
       }
 
-
-
+      if (board.hasWon()) {
+        WriteLine($"board.hasWon(): {currentPlayer.Name} wins.");
+        break;
+      }
 
       currentPlayer = currentPlayer == player1 ? player2 : player1;
-
     }
 
     // Start a game

@@ -53,7 +53,7 @@ class Board
     return true;
   }
 
-  public bool CheckWin()
+  public bool hasWon()
   {
     // a line (horizontal, vertical, or diagonal) with a sum of 15
 
@@ -73,13 +73,10 @@ class Board
         {
           verticalSumResult += Grid[j, i].Value;
         }
-        // WriteLine($"[{i}, {j}]: {horizontalSumResult}");
-        // WriteLine($"[{j}, {i}]: {verticalSumResult}");
       }
 
       if (horizontalSumResult == WinningScore || verticalSumResult == WinningScore)
       {
-        // WriteLine("Win!!");
         return true;
       }
     }
@@ -103,7 +100,6 @@ class Board
 
     if (d1 == WinningScore || d2 == WinningScore)
     {
-      WriteLine($"d1 - {d1 == WinningScore}, d2 - {d2 == WinningScore}");
       return true;
     }
 
