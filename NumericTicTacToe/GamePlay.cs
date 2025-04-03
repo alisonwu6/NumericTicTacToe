@@ -82,11 +82,11 @@ class GamePlay
 
       if (board.hasWon())
       {
+        board.Display("Final Result");
         WriteLine("==============");
         WriteLine("Game over");
         WriteLine($"{currentPlayer.Name} wins.");
         WriteLine("==============");
-        board.Display("Final Result");
         break;
       }
 

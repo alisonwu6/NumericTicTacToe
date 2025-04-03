@@ -37,7 +37,7 @@ class Board
   {
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
-      WriteLine($"***WARNING!!! Your move is outside of the board. The valid size is from 0 to {Size-1}.***");
+      WriteLine($"***WARNING!!! Your move is outside of the board. The valid size is from 0 to {Size - 1}.***");
       WriteLine("Please re-enter");
       return false;
     }
@@ -56,8 +56,11 @@ class Board
   public bool hasWon()
   {
     // a line (horizontal, vertical, or diagonal) with a sum of 15
+    // horizontal, vertical check 
+    // must occupy a full line. 
+    int isRowFull = 0;
+    int isColFull = 0;
 
-    // horizontal, vertical check
     for (int i = 0; i < Size; i++)
     {
       int horizontalSumResult = 0;
@@ -67,15 +70,18 @@ class Board
         if (Grid[i, j].HasValue)
         {
           horizontalSumResult += Grid[i, j].Value;
+          isRowFull++;
         }
 
         if (Grid[j, i].HasValue)
         {
           verticalSumResult += Grid[j, i].Value;
+          isColFull++;
         }
       }
-
-      if (horizontalSumResult == WinningScore || verticalSumResult == WinningScore)
+      WriteLine($"isRowFull: {isRowFull}");
+      WriteLine($"isColFull: {isColFull}");
+      if ((isRowFull == Size || isColFull == Size) && (horizontalSumResult == WinningScore || verticalSumResult == WinningScore))
       {
         return true;
       }
@@ -84,21 +90,26 @@ class Board
     // diagonal check
     int d1 = 0;
     int d2 = 0;
+    int isD1Full = 0;
+    int isD2Full = 0;
 
     for (int i = 0; i < Size; i++)
     {
       if (Grid[i, i].HasValue)
       {
         d1 += Grid[i, i].Value;
+        isD1Full++;
       }
 
       if (Grid[i, Size - 1 - i].HasValue)
       {
         d2 += Grid[i, Size - 1 - i].Value;
+        isD2Full++;
       }
     }
-
-    if (d1 == WinningScore || d2 == WinningScore)
+    WriteLine($"isD1Full: {isD1Full}");
+    WriteLine($"isD2Full: {isD2Full}");
+    if ((isD1Full == Size || isD2Full == Size) && (d1 == WinningScore || d2 == WinningScore))
     {
       return true;
     }
