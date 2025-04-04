@@ -1,6 +1,6 @@
 using static System.Console;
 
-class Board
+public class Board
 {
   public int Size { get; }
   public int?[,] Grid { get; }
@@ -44,7 +44,7 @@ class Board
 
     if (Grid[row, col].HasValue)
     {
-      WriteLine($"!-- WARNING --! The cell ({row}, {col}) is already taken.");
+      WriteLine($"!-- WARNING --! Your move [{row}, {col}] is already taken.");
       return false;
     }
 
