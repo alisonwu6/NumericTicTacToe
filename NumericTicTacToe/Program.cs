@@ -5,8 +5,8 @@ class Program
     static void Main(string[] args)
     {
         GamePlay gamePlay = new();
-        // GamePlay.Guild();
-        // GamePlay.CustomizeGame();
+        GamePlay.Guild();
+        gamePlay.CustomizeGame();
         gamePlay.SetGame();
         gamePlay.StartGame();
 

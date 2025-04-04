@@ -1,11 +1,10 @@
 using static System.Console;
+
 class Board
 {
-  public int Size;
-  public int?[,] Grid;
-  public int WinningScore;
-  public int row = -1;
-  public int col = -1;
+  public int Size { get; }
+  public int?[,] Grid { get; }
+  public int WinningScore { get; }
 
   public Board(int size)
   {
@@ -22,9 +21,9 @@ class Board
     {
       for (int j = 0; j < Size; j++)
       {
-        if (Grid[i, j] != null)
+        if (Grid[i, j].HasValue)
         {
-          Write(Grid[i, j].Value.ToString("D2") + "  ");
+          Write($"{Grid[i, j].Value:D2}  ");
         }
         else
         {
@@ -35,84 +34,80 @@ class Board
     }
   }
 
-  public bool CheckMove(int playSelectedNumber)
+  public bool IsValidMove(int row, int col)
   {
-    WriteLine("------CheckMove");
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
-      WriteLine($"!-- WARNING --! Your move is outside of the board. The valid size is from 0 to {Size - 1}.");
-      WriteLine("Please re-enter");
+      WriteLine($"!-- WARNING --! Your move is outside of the board. Valid range: 0 to {Size - 1}.");
       return false;
     }
 
-    if (Grid[row, col] != null)
+    if (Grid[row, col].HasValue)
     {
-      WriteLine($"!-- WARNING --! Your move [{row}, {col}] is already taken. Please make another move.");
-      WriteLine("Please re-enter");
+      WriteLine($"!-- WARNING --! The cell ({row}, {col}) is already taken.");
       return false;
     }
 
-    Grid[row, col] = playSelectedNumber;
     return true;
   }
 
-  // public void SetMove() {
-  //   // Grid[row, col] = number;
-  // }
+  public bool PlaceNumber(int row, int col, int number)
+  {
+    if (!IsValidMove(row, col)) {
+      return false;
+    }
+    Grid[row, col] = number;
+    return true;
+  }
 
   public bool CheckWin()
   {
-    // a line (horizontal, vertical, or diagonal) with a sum of 15
-    // horizontal, vertical check 
-    // must occupy a full line. 
-    int isRowFull = 0;
-    int isColFull = 0;
-
     for (int i = 0; i < Size; i++)
     {
-      int horizontalSumResult = 0;
-      int verticalSumResult = 0;
+      int rowSum = 0, colSum = 0;
+      int rowCount = 0, colCount = 0;
+
       for (int j = 0; j < Size; j++)
       {
         if (Grid[i, j].HasValue)
         {
-          horizontalSumResult += Grid[i, j].Value;
-          isRowFull++;
+          rowSum += Grid[i, j].Value;
+          rowCount++;
         }
-
         if (Grid[j, i].HasValue)
         {
-          verticalSumResult += Grid[j, i].Value;
-          isColFull++;
+          colSum += Grid[j, i].Value;
+          colCount++;
         }
       }
-      if ((isRowFull == Size || isColFull == Size) && (horizontalSumResult == WinningScore || verticalSumResult == WinningScore))
+
+      if ((rowCount == Size && rowSum == WinningScore) ||
+          (colCount == Size && colSum == WinningScore))
       {
         return true;
       }
     }
 
-    // diagonal check
-    int d1 = 0;
-    int d2 = 0;
-    int isD1Full = 0;
-    int isD2Full = 0;
+    int d1 = 0, d2 = 0;
+    int d1Count = 0, d2Count = 0;
 
     for (int i = 0; i < Size; i++)
     {
       if (Grid[i, i].HasValue)
       {
         d1 += Grid[i, i].Value;
-        isD1Full++;
+        d1Count++;
       }
 
       if (Grid[i, Size - 1 - i].HasValue)
       {
         d2 += Grid[i, Size - 1 - i].Value;
-        isD2Full++;
+        d2Count++;
       }
     }
-    if ((isD1Full == Size || isD2Full == Size) && (d1 == WinningScore || d2 == WinningScore))
+
+    if ((d1Count == Size && d1 == WinningScore) ||
+        (d2Count == Size && d2 == WinningScore))
     {
       return true;
     }

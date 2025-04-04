@@ -1,12 +1,13 @@
 using static System.Console;
+
 class GamePlay
 {
   private Board? board;
-  private Human? player1;
+  private Player? player1;
   private Player? player2;
   private Player? currentPlayer;
-  private readonly int size = 3;
-  private readonly int mode = 1;
+  private int size = 3;
+  private int mode = 1;
 
   public static void Guild()
   {
@@ -29,45 +30,53 @@ class GamePlay
     }
   }
 
-  public static void CustomizeGame()
+  public void CustomizeGame()
   {
-    // Board
+    // Board Size
     bool isSizeValid = false;
     while (!isSizeValid)
     {
       try
       {
         WriteLine("Enter a number to determine a board size for your game:");
-        int size = int.Parse(ReadLine() ?? "");
-        isSizeValid = size >= 3;
-        if (!isSizeValid)
+        int input = int.Parse(ReadLine() ?? "");
+        if (input >= 3)
         {
-          WriteLine($"!-- WARNING --! Your number must be greater or equal to 3.");
+          size = input;
+          isSizeValid = true;
+        }
+        else
+        {
+          WriteLine("!-- WARNING --! The board size must be >= 3.");
         }
       }
       catch (FormatException e)
       {
-        WriteLine($"!-- WARNING --! Your entered number is not numeric. Error: {e}.");
+        WriteLine($"!-- WARNING --! Invalid number format. Error: {e.Message}");
       }
     }
 
-    // Mode
+    // Game Mode
     bool isModeValid = false;
     while (!isModeValid)
     {
       try
       {
-        WriteLine("Enter 1 to play with human OR 2 with a computer:");
-        int mode = int.Parse(ReadLine() ?? "");
-        isModeValid = mode == 1 || mode == 2;
-        if (!isModeValid)
+        WriteLine("Enter 1 to play with another human, or 2 to play with a computer:");
+        int input = int.Parse(ReadLine() ?? "");
+        if (input == 1 || input == 2)
         {
-          WriteLine($"!-- WARNING --! Your number must 1 or 2");
+          mode = input;
+          isModeValid = true;
+        }
+        else
+        {
+          WriteLine("!-- WARNING --! Only 1 or 2 is accepted.");
         }
       }
       catch (FormatException e)
       {
-        WriteLine($"!-- WARNING --! Your entered number is not numeric. Error: {e}.");
+        WriteLine($"!-- WARNING --! Invalid number format. Error: {e.Message}");
       }
     }
   }
@@ -89,10 +98,9 @@ class GamePlay
       currentPlayer.EnterNumber();
       var (row, col) = currentPlayer.EnterMove(board);
 
-      if (board.IsValidMove(row, col))
+      if (board.PlaceNumber(row, col, currentPlayer.selectedNumber))
       {
-        board.PlaceNumber(row, col, currentPlayer.SelectedNumber);
-        currentPlayer.UseNumber(currentPlayer.SelectedNumber);
+        currentPlayer.UseNumber(currentPlayer.selectedNumber);
 
         if (board.CheckWin())
         {
@@ -101,28 +109,12 @@ class GamePlay
           break;
         }
 
-        // 輪替
         currentPlayer = currentPlayer == player1 ? player2 : player1;
       }
       else
       {
-        Console.WriteLine("Invalid move! Try again.");
+        WriteLine("Invalid move. Please try again.");
       }
     }
   }
-Ｆ
 }
-
-// validate the entered number within its lists.
-// while (!currentPlayer.CheckEnteredNumber(selectedNumber))
-// {
-//   try
-//   {
-//     WriteLine($"({currentPlayer.Name}) Re-enter your number: {string.Join(", ", currentNumbers)}");
-//     selectedNumber = int.Parse(ReadLine() ?? "");
-//   }
-//   catch (FormatException e)
-//   {
-//     WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
-//   }
-// }
