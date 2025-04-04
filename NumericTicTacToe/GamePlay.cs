@@ -82,23 +82,35 @@ class GamePlay
 
   public void StartGame()
   {
-    // running until someone wins.
     while (true)
     {
       board.Display(currentPlayer.Name);
+
       currentPlayer.EnterNumber();
+      var (row, col) = currentPlayer.EnterMove(board);
 
-      //   board.EnterMove(currentPlayer, currentPlayer.selectedNumber);
+      if (board.IsValidMove(row, col))
+      {
+        board.PlaceNumber(row, col, currentPlayer.SelectedNumber);
+        currentPlayer.UseNumber(currentPlayer.SelectedNumber);
 
-      //   // board.CheckMove()
+        if (board.CheckWin())
+        {
+          board.Display(currentPlayer.Name);
+          board.ShowResult(currentPlayer);
+          break;
+        }
 
-
-
-      //   if (board.CheckWin()) board.ShowResult(currentPlayer);
-
-      currentPlayer = currentPlayer == player1 ? player2 : player1;
+        // 輪替
+        currentPlayer = currentPlayer == player1 ? player2 : player1;
+      }
+      else
+      {
+        Console.WriteLine("Invalid move! Try again.");
+      }
     }
   }
+Ｆ
 }
 
 // validate the entered number within its lists.

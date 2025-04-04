@@ -35,29 +35,7 @@ class Board
     }
   }
 
-  public void EnterMove(Player currentPlayer, int selectedNumber)
-  {
-    WriteLine("------EnterMove");
-    while (true)
-    {
-      try
-      {
-        WriteLine($"({currentPlayer.Name}) Enter 0 to {Size - 1} to set row: ");
-        row = int.Parse(ReadLine() ?? "");
-
-        WriteLine($"({currentPlayer.Name}) Enter 0 to {Size - 1} to set column: ");
-        col = int.Parse(ReadLine() ?? "");
-
-        CheckMove(row, col, selectedNumber);
-      }
-      catch (FormatException e)
-      {
-        WriteLine($"!-- WARNING --! Your move contains incorrect format. Error: {e} ");
-      }
-    }
-  }
-
-  public bool CheckMove(int row, int col, int number)
+  public bool CheckMove(int playSelectedNumber)
   {
     WriteLine("------CheckMove");
     if (row < 0 || row >= Size || col < 0 || col >= Size)
@@ -74,13 +52,13 @@ class Board
       return false;
     }
 
-    Grid[row, col] = number;
+    Grid[row, col] = playSelectedNumber;
     return true;
   }
 
-  public void SetMove() {
-    // Grid[row, col] = number;
-  }
+  // public void SetMove() {
+  //   // Grid[row, col] = number;
+  // }
 
   public bool CheckWin()
   {

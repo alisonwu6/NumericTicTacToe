@@ -57,6 +57,28 @@ class Player
     }
   }
 
+  public (int, int) EnterMove(Board board)
+  {
+    WriteLine("------EnterMove");
+    while (true)
+    {
+      try
+      {
+        WriteLine($"({Name}) Enter 0 to {board.Size - 1} to set row: ");
+        row = int.Parse(ReadLine() ?? "");
+
+        WriteLine($"({Name}) Enter 0 to {board.Size - 1} to set column: ");
+        col = int.Parse(ReadLine() ?? "");
+
+        return (row, col);
+      }
+      catch (FormatException e)
+      {
+        WriteLine($"!-- WARNING --! Your move contains incorrect format. Error: {e} ");
+      }
+    }
+  }
+
   // public bool CheckEnteredNumber(int selectedNumber)
   // {
   //   int[] number = IsOdd ? OddNumbers : EvenNumbers;
