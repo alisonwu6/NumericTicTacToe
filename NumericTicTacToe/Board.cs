@@ -4,6 +4,8 @@ class Board
   public int Size;
   public int?[,] Grid;
   public int WinningScore;
+  public int row = -1;
+  public int col = -1;
 
   public Board(int size)
   {
@@ -33,8 +35,31 @@ class Board
     }
   }
 
-  public bool IsMoveGridValid(int row, int col, int number)
+  public void EnterMove(Player currentPlayer, int selectedNumber)
   {
+    WriteLine("------EnterMove");
+    while (true)
+    {
+      try
+      {
+        WriteLine($"({currentPlayer.Name}) Enter 0 to {Size - 1} to set row: ");
+        row = int.Parse(ReadLine() ?? "");
+
+        WriteLine($"({currentPlayer.Name}) Enter 0 to {Size - 1} to set column: ");
+        col = int.Parse(ReadLine() ?? "");
+
+        CheckMove(row, col, selectedNumber);
+      }
+      catch (FormatException e)
+      {
+        WriteLine($"!-- WARNING --! Your move contains incorrect format. Error: {e} ");
+      }
+    }
+  }
+
+  public bool CheckMove(int row, int col, int number)
+  {
+    WriteLine("------CheckMove");
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
       WriteLine($"!-- WARNING --! Your move is outside of the board. The valid size is from 0 to {Size - 1}.");
@@ -53,7 +78,11 @@ class Board
     return true;
   }
 
-  public bool hasWon()
+  public void SetMove() {
+    // Grid[row, col] = number;
+  }
+
+  public bool CheckWin()
   {
     // a line (horizontal, vertical, or diagonal) with a sum of 15
     // horizontal, vertical check 
@@ -111,5 +140,14 @@ class Board
     }
 
     return false;
+  }
+
+  public void ShowResult(Player currentPlayer)
+  {
+    Display("Final Result");
+    WriteLine("==============");
+    WriteLine("Game over");
+    WriteLine($"{currentPlayer.Name} wins.");
+    WriteLine("==============");
   }
 }

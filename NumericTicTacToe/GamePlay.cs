@@ -72,8 +72,9 @@ class GamePlay
     }
   }
 
-  public void SetPlayers()
+  public void SetGame()
   {
+    board = new Board(size);
     player1 = new Human(true, size);
     player2 = mode == 1 ? new Human(false, size) : new Computer(false, size);
     currentPlayer = player1;
@@ -81,79 +82,35 @@ class GamePlay
 
   public void StartGame()
   {
-    board = new Board(size);
-    int[] currentNumbers;
-
+    // running until someone wins.
     while (true)
     {
-      bool isMoveGridValid = false;
-      int selectedNumber;
-      int row = -1;
-      int col = -1;
-
-      // Human mode
       board.Display(currentPlayer.Name);
+      currentPlayer.EnterNumber();
 
-      // Entered number & validate if format is incorrect.
-      currentNumbers = currentPlayer.ShowPlayerNumbers();
+      //   board.EnterMove(currentPlayer, currentPlayer.selectedNumber);
 
-      while (true)
-      {
-        try
-        {
-          WriteLine($"({currentPlayer.Name}) Enter your number: {string.Join(", ", currentNumbers)}");
-          selectedNumber = int.Parse(ReadLine() ?? "");
-          break;
-        }
-        catch (FormatException e)
-        {
-          WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
-        }
-      }
+      //   // board.CheckMove()
 
-      // validate the entered number within its lists.
-      while (!currentPlayer.IsPlacedNumberValid(selectedNumber))
-      {
-        try
-        {
-          WriteLine($"Re-enter your number ({currentPlayer.Name}): {string.Join(", ", currentNumbers)}");
-          selectedNumber = int.Parse(ReadLine() ?? "");
-        }
-        catch (FormatException e)
-        {
-          WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
-        }
-      }
 
-      // validate the move in the grid
-      while (!isMoveGridValid)
-      {
-        try
-        {
-          WriteLine($"({currentPlayer.Name}) Enter 0 to {size - 1} to set row: ");
-          row = int.Parse(ReadLine() ?? "");
 
-          WriteLine($"({currentPlayer.Name}) Enter 0 to {size - 1} to set column: ");
-          col = int.Parse(ReadLine() ?? "");
-        }
-        catch (FormatException e)
-        {
-          WriteLine($"!-- WARNING --! Your move contains incorrect format. Error: {e} ");
-        }
-        isMoveGridValid = board.IsMoveGridValid(row, col, selectedNumber);
-      }
+      //   if (board.CheckWin()) board.ShowResult(currentPlayer);
 
-      if (board.hasWon())
-      {
-        board.Display("Final Result");
-        WriteLine("==============");
-        WriteLine("Game over");
-        WriteLine($"{currentPlayer.Name} wins.");
-        WriteLine("==============");
-        break;
-      }
       currentPlayer = currentPlayer == player1 ? player2 : player1;
-      // }
     }
   }
 }
+
+// validate the entered number within its lists.
+// while (!currentPlayer.CheckEnteredNumber(selectedNumber))
+// {
+//   try
+//   {
+//     WriteLine($"({currentPlayer.Name}) Re-enter your number: {string.Join(", ", currentNumbers)}");
+//     selectedNumber = int.Parse(ReadLine() ?? "");
+//   }
+//   catch (FormatException e)
+//   {
+//     WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
+//   }
+// }

@@ -7,7 +7,7 @@ class Program
         GamePlay gamePlay = new();
         // GamePlay.Guild();
         // GamePlay.CustomizeGame();
-        gamePlay.SetPlayers();
+        gamePlay.SetGame();
         gamePlay.StartGame();
 
         /*

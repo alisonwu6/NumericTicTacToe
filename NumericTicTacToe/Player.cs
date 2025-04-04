@@ -4,10 +4,12 @@ class Player
 {
   private int[] AllGameNumbers;
   private int AllNumbersCount;
-  private bool IsOdd;
+  private readonly bool IsOdd;
   public string Name;
   public int[] OddNumbers;
   public int[] EvenNumbers;
+  private int[]? currentNumbers;
+  public int selectedNumber;
 
 
   public Player(bool isOdd, int size)
@@ -41,31 +43,43 @@ class Player
     }
   }
 
-  public int[] ShowPlayerNumbers()
+  public void EnterNumber()
   {
-    return IsOdd ? OddNumbers : EvenNumbers;
+    currentNumbers = IsOdd ? OddNumbers : EvenNumbers;
+    try
+    {
+      WriteLine($"({Name}) Enter your number: {string.Join(", ", currentNumbers)}");
+      selectedNumber = int.Parse(ReadLine() ?? "");
+    }
+    catch (FormatException e)
+    {
+      WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
+    }
   }
 
-  public bool IsPlacedNumberValid(int selectedNumber)
-  {
-    int[] number = IsOdd ? OddNumbers : EvenNumbers;
+  // public bool CheckEnteredNumber(int selectedNumber)
+  // {
+  //   int[] number = IsOdd ? OddNumbers : EvenNumbers;
 
-    if (selectedNumber == -1)
-    {
-      WriteLine($"!-- WARNING --! -1 is a flag indicates that position of number has been placed on the board.");
-      return false;
-    }
+  //   if (selectedNumber == -1)
+  //   {
+  //     WriteLine($"!-- WARNING --! -1 is a flag indicates that position of number has been placed on the board.");
+  //     return false;
+  //   }
 
-    for (int i = 0; i < number.Length; i++)
-    {
-      if (selectedNumber == number[i])
-      {
-        number[i] = -1;
-        return true;
-      }
-    }
+  //   for (int i = 0; i < number.Length; i++)
+  //   {
+  //     if (selectedNumber == number[i])
+  //     {
+  //       number[i] = -1;
+  //       return true;
+  //     }
+  //   }
 
-    WriteLine($"!-- WARNING --! Your selected number is not in the {(IsOdd ? "odd" : "even")} number list.");
-    return false;
-  }
+  //   WriteLine($"!-- WARNING --! Your selected number is not in the {(IsOdd ? "odd" : "even")} number list.");
+  //   return false;
+  // }
 }
+
+// ChooseNumber 記錄數字
+// ChoosePosition 選擇位置
