@@ -1,12 +1,13 @@
 ﻿namespace NumericTicTacToe;
-using static System.Console;
 
 class Program
 {
     static void Main(string[] args)
     {
-        GamePlay gamePlay = new GamePlay();
-        gamePlay.start();
+        GamePlay gamePlay = new();
+        GamePlay.Guild();
+        GamePlay.CustomizeGame();
+        // gamePlay.StartGame();
     }
 }
 
