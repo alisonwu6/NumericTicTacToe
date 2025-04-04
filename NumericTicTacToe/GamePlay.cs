@@ -9,6 +9,64 @@ class GamePlay
   private int size = 3;
   private int mode = 1;
 
+  public void CheckLastGameState()
+  {
+    if (File.Exists("last_game_state.json"))
+    {
+      WriteLine("Detected a saved game. Do you want to continue? (y/n)");
+      string answer = ReadLine() ?? "";
+
+      if (answer == "y")
+      {
+        var saved = SaveLoadManager.Load();
+        if (saved != null)
+        {
+          board = new Board(saved.Size);
+          board.LoadGrid(saved.Grid);
+
+          player1 = new Human(true, saved.Size);
+          player2 = mode == 1 ? new Human(false, saved.Size) : new Computer(false, saved.Size);
+
+          if (player1.IsOdd)
+          {
+            player1.OddNumbers = saved.Player1Numbers;
+          }
+          else
+          {
+            player1.EvenNumbers = saved.Player1Numbers;
+          }
+
+          if (player2.IsOdd)
+          {
+            player2.OddNumbers = saved.Player2Numbers;
+          }
+          else
+          {
+            player2.EvenNumbers = saved.Player2Numbers;
+          }
+
+          currentPlayer = saved.IsPlayer1Turn ? player1 : player2;
+          WriteLine("Loaded previous game.");
+        }
+        else
+        {
+          WriteLine("Failed to load saved game. Starting new game.");
+        }
+      }
+      else
+      {
+        CustomizeGame();
+        SetGame();
+      }
+    }
+    else
+    {
+      Guide();
+      CustomizeGame();
+      SetGame();
+    }
+  }
+
   public static void Guide()
   {
     WriteLine("Welcome To Numeric Tic-Tac-Toe Gameplay.");
@@ -91,30 +149,28 @@ class GamePlay
 
   public void StartGame()
   {
-    // 讀取存檔
-    var saved = SaveLoadManager.Load();
-    if (saved != null)
-    {
-      board = new Board(saved.Size);
-      board.LoadGrid(saved.Grid);
-
-      player1 = new Human(true, saved.Size);
-      player1.OddNumbers = saved.Player1Numbers;
-
-      player2 = mode == 1 ? new Human(false, saved.Size) : new Computer(false, saved.Size);
-      player2.EvenNumbers = saved.Player2Numbers;
-
-      currentPlayer = saved.IsPlayer1Turn ? player1 : player2;
-
-      WriteLine("Loaded previous game.");
-    }
-    else
-    {
-      SetGame();
-    }
-
     while (true)
     {
+      WriteLine("\nOptions: (P)lay | (S)ave | (Q)uit");
+      string choice = ReadLine() ?? "";
+
+      if (choice == "s")
+      {
+        SaveLoadManager.Save(board, player1, player2, currentPlayer);
+        WriteLine("Game progress saved.");
+        continue;
+      }
+      else if (choice == "q")
+      {
+        WriteLine("Game exited.");
+        return;
+      }
+      else if (choice != "p")
+      {
+        WriteLine("Invalid input. Please enter P, S, or Q.");
+        continue;
+      }
+
       board.Display(currentPlayer.Name);
       currentPlayer.EnterNumber();
       var (row, col) = currentPlayer.EnterMove(board);
@@ -127,7 +183,7 @@ class GamePlay
         {
           board.Display(currentPlayer.Name);
           board.ShowResult(currentPlayer);
-          File.Delete("savegame.json");
+          File.Delete("last_game_state.json");
           break;
         }
 

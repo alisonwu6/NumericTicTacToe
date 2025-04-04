@@ -5,18 +5,8 @@ class Program
     static void Main(string[] args)
     {
         GamePlay gamePlay = new();
-        GamePlay.Guide();
-        gamePlay.CustomizeGame();
-        gamePlay.SetGame();
+        gamePlay.CheckLastGameState();
         gamePlay.StartGame();
-
-        /*
-        * 1. choose game mode
-        * 2. size of the board
-        * 3. display current game board and prompts the player to make a move,
-        *    save the game or view the `help menu`.
-        * 4. display the final result before existing
-        */
     }
 }
 

@@ -3,7 +3,7 @@ using static System.Console;
 
 class SaveLoadManager
 {
-  private const string SavePath = "savegame.json";
+  private const string SavePath = "last_game_state.json";
 
   public static void Save(Board board, Player player1, Player player2, Player currentPlayer)
   {
