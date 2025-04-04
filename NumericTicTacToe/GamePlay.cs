@@ -5,8 +5,8 @@ class GamePlay
   private Human? player1;
   private Player? player2;
   private Player? currentPlayer;
-  private readonly int size;
-  private readonly int mode;
+  private readonly int size = 3;
+  private readonly int mode = 1;
 
   public static void Guild()
   {
@@ -40,7 +40,8 @@ class GamePlay
         WriteLine("Enter a number to determine a board size for your game:");
         int size = int.Parse(ReadLine() ?? "");
         isSizeValid = size >= 3;
-        if (!isSizeValid) {
+        if (!isSizeValid)
+        {
           WriteLine($"!-- WARNING --! Your number must be greater or equal to 3.");
         }
       }
@@ -57,8 +58,8 @@ class GamePlay
       try
       {
         WriteLine("Enter 1 to play with human OR 2 with a computer:");
-        int mode = int.Parse(ReadLine() ?? ""); 
-        isModeValid = mode == 1 || mode ==2;
+        int mode = int.Parse(ReadLine() ?? "");
+        isModeValid = mode == 1 || mode == 2;
         if (!isModeValid)
         {
           WriteLine($"!-- WARNING --! Your number must 1 or 2");
@@ -71,102 +72,88 @@ class GamePlay
     }
   }
 
+  public void SetPlayers()
+  {
+    player1 = new Human(true, size);
+    player2 = mode == 1 ? new Human(false, size) : new Computer(false, size);
+    currentPlayer = player1;
+  }
+
   public void StartGame()
   {
-
     board = new Board(size);
     int[] currentNumbers;
 
-    player1 = new Human(true, size);
-
-    if (mode ==2 )
+    while (true)
     {
-      player2 = new Computer(true, size);
-    }
-    else
-    {
+      bool isMoveGridValid = false;
+      int selectedNumber;
+      int row = -1;
+      int col = -1;
 
-      player2 = new Human(false, size);
-      currentPlayer = player1;
+      // Human mode
+      board.Display(currentPlayer.Name);
+
+      // Entered number & validate if format is incorrect.
+      currentNumbers = currentPlayer.ShowPlayerNumbers();
 
       while (true)
       {
-        bool isMoveGridValid = false;
-        int selectedNumber;
-        int row = -1;
-        int col = -1;
-
-        // Human mode
-        board.Display(currentPlayer.Name);
-
-        // Entered number & validate if format is incorrect.
-        currentNumbers = currentPlayer.ShowPlayerNumbers();
-
-        while (true)
+        try
         {
-          try
-          {
-            WriteLine($"Enter your numbers ({currentPlayer.Name}): {string.Join(", ", currentNumbers)}");
-            selectedNumber = int.Parse(ReadLine() ?? "");
-            break;
-          }
-          catch (FormatException e)
-          {
-            WriteLine($"***WARNING!!! Your selected number is not in the right format. Error: {e} ***");
-          }
-        }
-
-        // validate the entered number within its lists.
-        while (!currentPlayer.IsPlacedNumberValid(selectedNumber))
-        {
-          try
-          {
-            WriteLine($"Re-enter your numbers ({currentPlayer.Name}): {string.Join(", ", currentNumbers)}");
-            selectedNumber = int.Parse(ReadLine() ?? "");
-          }
-          catch (FormatException e)
-          {
-            WriteLine($"***WARNING!!! Your selected number is not in the right format. Error: {e} ***");
-          }
-        }
-
-        // validate the move in the grid
-        while (!isMoveGridValid)
-        {
-          try
-          {
-            WriteLine($"{currentPlayer.Name}: Enter 0 to {size - 1} to set row: ");
-            row = int.Parse(ReadLine() ?? "");
-
-            WriteLine($"{currentPlayer.Name}: Enter 0 到 {size - 1} to set column: ");
-            col = int.Parse(ReadLine() ?? "");
-          }
-          catch (FormatException e)
-          {
-            WriteLine($"***WARNING!!! Your move contains incorrect format. Error: {e} ***");
-          }
-          isMoveGridValid = board.IsMoveGridValid(row, col, selectedNumber);
-        }
-
-        if (board.hasWon())
-        {
-          board.Display("Final Result");
-          WriteLine("==============");
-          WriteLine("Game over");
-          WriteLine($"{currentPlayer.Name} wins.");
-          WriteLine("==============");
+          WriteLine($"({currentPlayer.Name}) Enter your number: {string.Join(", ", currentNumbers)}");
+          selectedNumber = int.Parse(ReadLine() ?? "");
           break;
         }
-        currentPlayer = currentPlayer == player1 ? player2 : player1;
+        catch (FormatException e)
+        {
+          WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
+        }
       }
-    }
-    /*
-    * 1. choose game mode
-    * 2. size of the board
-    * 3. display current game board and prompts the player to make a move,
-    *    save the game or view the `help menu`.
-    * 4. display the final result before existing
-    */
-  }
 
+      // validate the entered number within its lists.
+      while (!currentPlayer.IsPlacedNumberValid(selectedNumber))
+      {
+        try
+        {
+          WriteLine($"Re-enter your number ({currentPlayer.Name}): {string.Join(", ", currentNumbers)}");
+          selectedNumber = int.Parse(ReadLine() ?? "");
+        }
+        catch (FormatException e)
+        {
+          WriteLine($"!-- WARNING --! Your selected number is not in the right format. Error: {e} ");
+        }
+      }
+
+      // validate the move in the grid
+      while (!isMoveGridValid)
+      {
+        try
+        {
+          WriteLine($"({currentPlayer.Name}) Enter 0 to {size - 1} to set row: ");
+          row = int.Parse(ReadLine() ?? "");
+
+          WriteLine($"({currentPlayer.Name}) Enter 0 to {size - 1} to set column: ");
+          col = int.Parse(ReadLine() ?? "");
+        }
+        catch (FormatException e)
+        {
+          WriteLine($"!-- WARNING --! Your move contains incorrect format. Error: {e} ");
+        }
+        isMoveGridValid = board.IsMoveGridValid(row, col, selectedNumber);
+      }
+
+      if (board.hasWon())
+      {
+        board.Display("Final Result");
+        WriteLine("==============");
+        WriteLine("Game over");
+        WriteLine($"{currentPlayer.Name} wins.");
+        WriteLine("==============");
+        break;
+      }
+      currentPlayer = currentPlayer == player1 ? player2 : player1;
+      // }
+    }
+  }
 }

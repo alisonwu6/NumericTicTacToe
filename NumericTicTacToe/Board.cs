@@ -37,14 +37,14 @@ class Board
   {
     if (row < 0 || row >= Size || col < 0 || col >= Size)
     {
-      WriteLine($"***WARNING!!! Your move is outside of the board. The valid size is from 0 to {Size - 1}.***");
+      WriteLine($"!-- WARNING --! Your move is outside of the board. The valid size is from 0 to {Size - 1}.");
       WriteLine("Please re-enter");
       return false;
     }
 
     if (Grid[row, col] != null)
     {
-      WriteLine($"***WARNING!!! Your move [{row}, {col}] is already taken. Please make another move.***");
+      WriteLine($"!-- WARNING --! Your move [{row}, {col}] is already taken. Please make another move.");
       WriteLine("Please re-enter");
       return false;
     }

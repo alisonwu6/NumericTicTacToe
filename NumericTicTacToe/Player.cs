@@ -52,7 +52,7 @@ class Player
 
     if (selectedNumber == -1)
     {
-      WriteLine($"***WARNING!!! -1 is a flag indicates that position of number has been placed on the board.***");
+      WriteLine($"!-- WARNING --! -1 is a flag indicates that position of number has been placed on the board.");
       return false;
     }
 
@@ -65,7 +65,7 @@ class Player
       }
     }
 
-    WriteLine($"***WARNING!!! Your selected number is not in the {(IsOdd ? "odd" : "even")} number list.***");
+    WriteLine($"!-- WARNING --! Your selected number is not in the {(IsOdd ? "odd" : "even")} number list.");
     return false;
   }
 }
