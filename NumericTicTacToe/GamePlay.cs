@@ -25,6 +25,7 @@ class GamePlay
     WriteLine("First player is going to have odd numbers, and the 2ed one is going to have even numbers; ");
     WriteLine("whichever player has the odds ALWAYS GOES FIRST.");
     WriteLine("Each number can only be used once.");
+    WriteLine("In the list of your number, `-1` is a flag indicates that position of number has been placed on the board.");
     WriteLine($"The winner is the first player to complete a line (horizontal, vertical, or diagonal) with a sum of {size * (size * size + 1) / 2}");
     WriteLine("The line may contain both even and odd numbers.");
     WriteLine("==========================================================================================================================");

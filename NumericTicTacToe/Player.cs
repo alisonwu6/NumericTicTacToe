@@ -52,7 +52,7 @@ class Player
 
     if (selectedNumber == -1)
     {
-      WriteLine($"***WARNING!!! -1 indicates a number has been placed on the board.***");
+      WriteLine($"***WARNING!!! -1 is a flag indicates that position of number has been placed on the board.***");
       return false;
     }
 
