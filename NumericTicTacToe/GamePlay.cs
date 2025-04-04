@@ -9,7 +9,7 @@ class GamePlay
   private int size = 3;
   private int mode = 1;
 
-  public static void Guild()
+  public static void Guide()
   {
     WriteLine("Welcome To Numeric Tic-Tac-Toe Gameplay.");
     WriteLine("=================================================================================================================================");
@@ -91,10 +91,31 @@ class GamePlay
 
   public void StartGame()
   {
+    // 讀取存檔
+    var saved = SaveLoadManager.Load();
+    if (saved != null)
+    {
+      board = new Board(saved.Size);
+      board.LoadGrid(saved.Grid);
+
+      player1 = new Human(true, saved.Size);
+      player1.OddNumbers = saved.Player1Numbers;
+
+      player2 = mode == 1 ? new Human(false, saved.Size) : new Computer(false, saved.Size);
+      player2.EvenNumbers = saved.Player2Numbers;
+
+      currentPlayer = saved.IsPlayer1Turn ? player1 : player2;
+
+      WriteLine("Loaded previous game.");
+    }
+    else
+    {
+      SetGame();
+    }
+
     while (true)
     {
       board.Display(currentPlayer.Name);
-
       currentPlayer.EnterNumber();
       var (row, col) = currentPlayer.EnterMove(board);
 
@@ -106,8 +127,11 @@ class GamePlay
         {
           board.Display(currentPlayer.Name);
           board.ShowResult(currentPlayer);
+          File.Delete("savegame.json");
           break;
         }
+
+        SaveLoadManager.Save(board, player1, player2, currentPlayer);
 
         currentPlayer = currentPlayer == player1 ? player2 : player1;
       }

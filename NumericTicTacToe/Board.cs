@@ -3,7 +3,7 @@ using static System.Console;
 public class Board
 {
   public int Size { get; }
-  public int?[,] Grid { get; }
+  public int?[,] Grid { get; set; }
   public int WinningScore { get; }
 
   public Board(int size)
@@ -53,7 +53,8 @@ public class Board
 
   public bool PlaceNumber(int row, int col, int number)
   {
-    if (!IsValidMove(row, col)) {
+    if (!IsValidMove(row, col))
+    {
       return false;
     }
     Grid[row, col] = number;
@@ -122,5 +123,16 @@ public class Board
     WriteLine("Game over");
     WriteLine($"{currentPlayer.Name} wins.");
     WriteLine("==============");
+  }
+
+  public void LoadGrid(List<List<int?>> sourceGrid)
+  {
+    for (int i = 0; i < Size; i++)
+    {
+      for (int j = 0; j < Size; j++)
+      {
+        Grid[i, j] = sourceGrid[i][j];
+      }
+    }
   }
 }

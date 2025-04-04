@@ -1,6 +1,6 @@
 public abstract class Player
 {
-  protected bool IsOdd;
+  public bool IsOdd;
   public string Name;
   public int[] OddNumbers;
   public int[] EvenNumbers;
