@@ -8,10 +8,20 @@ class Computer : Player
 
   public override void EnterNumber()
   {
-    var current = IsOdd ? OddNumbers : EvenNumbers;
-    var available = current.Where(n => n != -1).ToArray();
+    var current = EvenNumbers;
+    
+    List<int> available = new List<int>();
+    foreach (int n in current)
+    {
+      if (n != -1)
+      {
+        available.Add(n);
+      }
+    }
 
-    selectedNumber = available[randomNum.Next(available.Length)];
+    int index = randomNum.Next(available.Count);
+    selectedNumber = available[index];
+
     WriteLine($"(Computer) selected number: {selectedNumber}");
   }
 

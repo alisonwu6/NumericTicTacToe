@@ -17,6 +17,7 @@ public class Board
   {
     WriteLine("------------------------------------------");
     WriteLine($"Your Numeric Tic-Tac-Toe Board ({name})");
+    WriteLine($"Board Size: {Size} x {Size}, Winning Score: {WinningScore}");
     for (int i = 0; i < Size; i++)
     {
       for (int j = 0; j < Size; j++)

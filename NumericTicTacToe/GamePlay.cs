@@ -145,29 +145,31 @@ class GamePlay
       board.Display(currentPlayer.Name);
 
       // 2 to make a move, save the game, or view the help menu.
-
-      bool isChoiceValidToStart = false;
-      while (!isChoiceValidToStart)
+      if (mode == 1)
       {
-        WriteLine("Options: (m)ove | (s)ave | (h)elp");
-        string choice = ReadLine() ?? "";
-        if (choice == "s")
+        bool isChoiceValidToStart = false;
+        while (!isChoiceValidToStart)
         {
-          SaveLoadOperator.Save(board, player1, player2, currentPlayer);
-          return;
-        }
-        else if (choice == "h")
-        {
-          HelpMenu();
-          board.Display(currentPlayer.Name);
-        }
-        else if (choice == "m")
-        {
-          isChoiceValidToStart = true;
-        }
-        else
-        {
-          WriteLine("Invalid input. Please enter m, s or h.");
+          WriteLine("Options: (m)ove | (s)ave | (h)elp");
+          string choice = ReadLine() ?? "";
+          if (choice == "s")
+          {
+            SaveLoadOperator.Save(board, player1, player2, currentPlayer);
+            return;
+          }
+          else if (choice == "h")
+          {
+            HelpMenu();
+            board.Display(currentPlayer.Name);
+          }
+          else if (choice == "m")
+          {
+            isChoiceValidToStart = true;
+          }
+          else
+          {
+            WriteLine("Invalid input. Please enter m, s or h.");
+          }
         }
       }
 
@@ -186,8 +188,6 @@ class GamePlay
           File.Delete("last_game_state.json");
           break;
         }
-
-        SaveLoadOperator.Save(board, player1, player2, currentPlayer);
 
         currentPlayer = currentPlayer == player1 ? player2 : player1;
       }
