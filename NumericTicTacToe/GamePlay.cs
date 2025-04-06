@@ -146,10 +146,11 @@ class GamePlay
 
       // 2 to make a move, save the game, or view the help menu.
 
-      WriteLine("Options: (m)ove | (s)ave | (h)elp");
-      string choice = ReadLine() ?? "";
       bool isChoiceValidToStart = false;
-      while (!isChoiceValidToStart) {
+      while (!isChoiceValidToStart)
+      {
+        WriteLine("Options: (m)ove | (s)ave | (h)elp");
+        string choice = ReadLine() ?? "";
         if (choice == "s")
         {
           SaveLoadOperator.Save(board, player1, player2, currentPlayer);
@@ -158,14 +159,15 @@ class GamePlay
         else if (choice == "h")
         {
           HelpMenu();
-          isChoiceValidToStart = true;
+          board.Display(currentPlayer.Name);
         }
         else if (choice == "m")
         {
           isChoiceValidToStart = true;
         }
-        else {
-          WriteLine("Invalid input. Please enter m, s, or h.");
+        else
+        {
+          WriteLine("Invalid input. Please enter m, s or h.");
         }
       }
 
