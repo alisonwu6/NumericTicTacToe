@@ -2,18 +2,18 @@
   "Size": 3,
   "Grid": [
     [
-      9,
-      null,
-      null
-    ],
-    [
       null,
       null,
       null
     ],
     [
       null,
-      8,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
       null
     ]
   ],
@@ -22,13 +22,13 @@
     3,
     5,
     7,
-    -1
+    9
   ],
   "Player2Numbers": [
     2,
     4,
     6,
-    -1
+    8
   ],
-  "IsPlayer1Turn": false
+  "IsPlayer1Turn": true
 }

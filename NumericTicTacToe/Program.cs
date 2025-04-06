@@ -1,10 +1,13 @@
-﻿namespace NumericTicTacToe;
+﻿using static System.Console;
+namespace NumericTicTacToe;
 
 class Program
 {
     static void Main(string[] args)
     {
+        WriteLine("Welcome To Numeric Tic-Tac-Toe Gameplay.");
         GamePlay gamePlay = new();
+        GamePlay.HelpMenu();
         gamePlay.CheckLastGameState();
         gamePlay.StartGame();
     }

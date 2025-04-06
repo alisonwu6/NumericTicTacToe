@@ -1,7 +1,7 @@
 using System.Text.Json;
 using static System.Console;
 
-class SaveLoadManager
+class SaveLoadOperator
 {
   private const string SavePath = "last_game_state.json";
 

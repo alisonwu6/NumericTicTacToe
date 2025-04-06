@@ -13,12 +13,12 @@ class GamePlay
   {
     if (File.Exists("last_game_state.json"))
     {
-      WriteLine("Detected a saved game. Do you want to continue? (y/n)");
+      WriteLine("You have a saved game. Do you want to continue? (y/n)");
       string answer = ReadLine() ?? "";
 
       if (answer == "y")
       {
-        var saved = SaveLoadManager.Load();
+        var saved = SaveLoadOperator.Load();
         if (saved != null)
         {
           board = new Board(saved.Size);
@@ -46,7 +46,7 @@ class GamePlay
           }
 
           currentPlayer = saved.IsPlayer1Turn ? player1 : player2;
-          WriteLine("Loaded previous game.");
+          WriteLine("Your last game is loaded");
         }
         else
         {
@@ -61,15 +61,13 @@ class GamePlay
     }
     else
     {
-      Guide();
       CustomizeGame();
       SetGame();
     }
   }
 
-  public static void Guide()
+  public static void HelpMenu()
   {
-    WriteLine("Welcome To Numeric Tic-Tac-Toe Gameplay.");
     WriteLine("=================================================================================================================================");
     WriteLine("Rules for the game: ");
     WriteLine("1. Place one of your numbers on the tic-tac-toe board.");
@@ -78,14 +76,6 @@ class GamePlay
     WriteLine("4. The winner is the first player to complete a line(horizontal, vertical, or diagonal) with a sum of size(size * size + 1) / 2");
     WriteLine("5. The line may contain both even and odd numbers.");
     WriteLine("=================================================================================================================================");
-
-    WriteLine("Are you ready? (y/n)");
-    string ready = ReadLine() ?? "";
-    if (ready == "n")
-    {
-      WriteLine("You can try it anytime, see you. ");
-      return;
-    }
   }
 
   public void CustomizeGame()
@@ -151,27 +141,35 @@ class GamePlay
   {
     while (true)
     {
-      WriteLine("\nOptions: (P)lay | (S)ave | (Q)uit");
-      string choice = ReadLine() ?? "";
-
-      if (choice == "s")
-      {
-        SaveLoadManager.Save(board, player1, player2, currentPlayer);
-        WriteLine("Game progress saved.");
-        continue;
-      }
-      else if (choice == "q")
-      {
-        WriteLine("Game exited.");
-        return;
-      }
-      else if (choice != "p")
-      {
-        WriteLine("Invalid input. Please enter P, S, or Q.");
-        continue;
-      }
-
+      // 1 Display board
       board.Display(currentPlayer.Name);
+
+      // 2 to make a move, save the game, or view the help menu.
+
+      WriteLine("Options: (m)ove | (s)ave | (h)elp");
+      string choice = ReadLine() ?? "";
+      bool isChoiceValidToStart = false;
+      while (!isChoiceValidToStart) {
+        if (choice == "s")
+        {
+          SaveLoadOperator.Save(board, player1, player2, currentPlayer);
+          return;
+        }
+        else if (choice == "h")
+        {
+          HelpMenu();
+          isChoiceValidToStart = true;
+        }
+        else if (choice == "m")
+        {
+          isChoiceValidToStart = true;
+        }
+        else {
+          WriteLine("Invalid input. Please enter m, s, or h.");
+        }
+      }
+
+      // Game starts
       currentPlayer.EnterNumber();
       var (row, col) = currentPlayer.EnterMove(board);
 
@@ -187,7 +185,7 @@ class GamePlay
           break;
         }
 
-        SaveLoadManager.Save(board, player1, player2, currentPlayer);
+        SaveLoadOperator.Save(board, player1, player2, currentPlayer);
 
         currentPlayer = currentPlayer == player1 ? player2 : player1;
       }
