@@ -7,6 +7,7 @@ class SaveLoadOperator
 
   public static void Save(Board board, Player player1, Player player2, Player currentPlayer)
   {
+    // board
     var gridList = new List<List<int?>>();
     for (int i = 0; i < board.Size; i++)
     {
@@ -18,6 +19,7 @@ class SaveLoadOperator
       gridList.Add(row);
     }
 
+    // state of game
     var state = new GameState
     {
       Size = board.Size,
